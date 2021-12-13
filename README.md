@@ -14,7 +14,7 @@ A Google App Script tool for everyone who loves Hololive.
 2. Feel free to modify your "holoChID" contents
 3. We can update the livestream videos but cost channel IDs * 100 units
 4. Or add more videos manually through the input field which beside the "Add" button
-5. Please input video IDs only and separated by space
+5. Please input video IDs only (separate with space)
 
 ### Demo
 - Background Image Credit: [twitter@tsuru_py](https://twitter.com/tsuru_py/status/1467466242391175171)
