@@ -19,4 +19,4 @@ A Google Apps Script tool for everyone who loves Hololive.
 ### Demo
 - Background Image Credit: [twitter@tsuru_py](https://twitter.com/tsuru_py/status/1467466242391175171)
 
-<img src="./demo/demo.gif" width="400" height="258"/>
+<img src="./demo/demo.gif" width="400" height="236"/>
