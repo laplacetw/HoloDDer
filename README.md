@@ -1,5 +1,5 @@
 # HoloDDer
-A Google App Script tool for everyone who loves Hololive.
+A Google Apps Script tool for everyone who loves Hololive.
 
 ### Setting
 1. Create a new App Script project on Google Drive
@@ -7,7 +7,7 @@ A Google App Script tool for everyone who loves Hololive.
 3. Create a new .html file which the same  as my index.html (copy&paste)
 4. Add YouTube Data API v3 service
 5. Deploy as a web application
-- [Overview of Google App Script](https://developers.google.com/apps-script/overview)
+- [Overview of Google Apps Script](https://developers.google.com/apps-script/overview)
 
 ### How to use
 1. Notice the cost of [YouTube API Quota](https://developers.google.com/youtube/v3/getting-started#quota). We have 10,000 units per day but cost 100 units for [searching](https://developers.google.com/youtube/v3/docs/search/list) with every channel ID in "holoChID".
