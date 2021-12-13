@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>HoloDDer</title>
+    <meta charset="utf-8"> 
+    <meta name="description" content="誰にも大好き!"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,
+        minimum-scale=1,user-scalable=no,viewport-fit=cover">
+  </head>
+  <body>
+    <div id="app">
+      <div id="control">
+        <button class="btn" @click="updateStreamData()">Update</button>
+        <button class="btn" @click="videoLarger()">Larger</button>
+        <button class="btn" @click="videoSmaller()">Smaller</button>
+        <button class="btn" @click="addStreamID()">+Add+</button>
+        <input type="text" ref="input" placeholder="Youtube Video ID only">
+      </div>
+      <iframe v-for="(title, id) in livestreams" :width="iframeWidth" :height="iframeHeight" :src="'https://www.youtube.com/embed/' + id + '?autoplay=1&mute=1'" frameborder="5" allowfullscreen></iframe>
+    </div>
+
+    <style>
+      body {
+        background-image: url('https://pbs.twimg.com/media/FF18xHSUUAIs_Rc?format=jpg&name=large');
+        background-size: cover;
+        background-color: hsla(0, 0%, 100%, 0.5);
+        background-blend-mode: overlay;
+        background-repeat: no-repeat;
+      }
+
+      #control { text-align:center; }
+
+      .btn {
+        display: inline-block;
+        color: white;
+        background-color: DodgerBlue;
+        font-size: 15px;
+        border: none;
+        border-radius: 16px;
+        margin: 20px auto 20px auto;
+        padding: 5px 10px;
+      }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
+    <script>
+      const app = new Vue({
+        el: "#app",
+        data: {
+          iframeWidth: 426,
+          iframeHeight: 240,
+          livestreams: {}
+        },
+        mounted() {
+          google.script.run.withSuccessHandler(this.setStreamData).getAllLiveStream();
+        },
+        methods:{
+          setStreamData(id) {
+            this.livestreams=id;
+          },
+
+          updateStreamData() {
+            this.livestreams={};
+            google.script.run.withSuccessHandler(this.setStreamData).getAllLiveStream();
+          },
+
+          addStreamID() {
+            let input = this.$refs.input.value.split(' ');
+            input.forEach(id => Vue.set(this.livestreams, id, id) );
+            this.$refs.input.value = '';
+          },
+
+          videoLarger() {
+            this.iframeWidth += 213;
+            this.iframeHeight += 120;
+          },
+
+          videoSmaller() {
+            if(this.iframeWidth > 213) {
+              this.iframeWidth -= 213;
+              this.iframeHeight -= 120;
+            }
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
