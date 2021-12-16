@@ -15,9 +15,10 @@ Background Image Credit: [twitter@tsuru_py](https://twitter.com/tsuru_py/status/
 - [Overview of Google Apps Script](https://developers.google.com/apps-script/overview)
 
 ### How to use
-1. Feel free to modify "holoChID" contents in "code .gs"
-2. Get/Update the livestream videos through the 🔄 &nbsp;button 
-3. Add video manually through the input field which beside the "Add" button
+1. Feel free to modify "holoChID" in "code .gs"
+2. HoloDDer will check and display all livestreams of VTuber in "holoChID"
+3. Get/Update the livestream data through the 🔄 &nbsp;button 
+4. Add video manually through the input field and "Add" button
 
 ---
 ### Change Log
