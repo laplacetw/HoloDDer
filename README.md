@@ -30,3 +30,5 @@ Background Image Credit: [twitter@tsuru_py](https://twitter.com/tsuru_py/status/
 - [YouTube API](https://developers.google.com/youtube/v3/getting-started) is deprecated due to the big cost of search
 - Get livestreams data from [Hololive.tv](https://schedule.hololive.tv) directly
 - Improve the UI/UX
+#### Fixed
+- Avatar tooltip not working after livestreams data update

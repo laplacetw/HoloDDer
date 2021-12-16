@@ -82,7 +82,6 @@
           showLivestreams: {}
         },
         mounted() {
-          this.tooltipTrigger();
           // google.script.run.withSuccessHandler(this.setStreamData).getHoloLiveStreams();
         },
         methods:{
@@ -110,6 +109,7 @@
               });
 
               this.showLivestreams = showLivestreams;
+              this.tooltipTrigger();
             }
           },
 
@@ -133,7 +133,7 @@
               // use id as the name of vtuber instead
               Vue.set(this.livestreams, id, [true, this.avatar, id]);
               Vue.set(this.showLivestreams, id, id);
-              this.tooltipTrigger()
+              this.tooltipTrigger();
             }
 
             // clear input field
