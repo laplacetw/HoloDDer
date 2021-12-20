@@ -22,6 +22,12 @@ Background Image Credit: [twitter@tsuru_py](https://twitter.com/tsuru_py/status/
 
 ---
 ### Change Log
+2021-12-21
+#### Changed
+- Using CSS for livestreams display control instead of Vue list rendering
+#### Fixed
+- Unnecessary re-rendering for livestreams display control and stopping many livetreams afterwards
+
 2021-12-16
 #### Added
 - Boostrap@5.1.1

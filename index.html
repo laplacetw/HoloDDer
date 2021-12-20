@@ -52,7 +52,7 @@
         </div>
       </nav>
       <!-- navbar end-->
-      <iframe class="mx-1" v-for="(id, vtuber) in showLivestreams" :width="iframeWidth" :height="iframeHeight" :src="'https://www.youtube.com/embed/' + id + '?autoplay=0&mute=1'" allowfullscreen></iframe>
+      <iframe class="mx-1" v-for="(data, vtuber) in livestreams" :width="iframeWidth" :height="iframeHeight" :src="'https://www.youtube.com/embed/' + data[2] + '?autoplay=0&mute=1&enablejsapi=1'" :class="data[0] ? '' : 'hide'" :ref="data[2]" allowfullscreen></iframe>
     </div>
 
     <style>
@@ -65,6 +65,7 @@
       }
 
       .avatar { margin-bottom: 3px !important; }
+      .hide { display:none !important; }
     </style>
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
@@ -78,8 +79,7 @@
           iframeWidth: 426,
           iframeHeight: 240,
           avatar: "https://yt3.ggpht.com/ytc/AKedOLTj0OSWM9TvPy4e8v1_o99OtP3Bg7FXthdkgr2bCQ=s176-c-k-c0x00ffffff-no-rj-mo",
-          livestreams: {},
-          showLivestreams: {}
+          livestreams: {}
         },
         mounted() {
           // google.script.run.withSuccessHandler(this.setStreamData).getHoloLiveStreams();
@@ -97,18 +97,10 @@
 
           setStreamData(listStream) {
             // listStream : {vtuber : [true, avatar, livestreamID]}
-            this.livestreams = listStream;
-            const keys = Object.keys(this.livestreams);
-            if(keys.length === 0) {
-              alert("Sorry, there's no livestream you love now.");
-            } else {
-              const showLivestreams = {};
-              keys.forEach(vtuber => {
-                // {vtuber : id}
-                showLivestreams[vtuber] = listStream[vtuber][2];
-              });
-
-              this.showLivestreams = showLivestreams;
+            const keys = Object.keys(listStream);
+            if(keys.length === 0) alert("Sorry, there's no livestream you love now.");
+            else {
+              this.livestreams = listStream;
               this.tooltipTrigger();
             }
           },
@@ -132,7 +124,6 @@
             if(id.length > 0) {
               // use id as the name of vtuber instead
               Vue.set(this.livestreams, id, [true, this.avatar, id]);
-              Vue.set(this.showLivestreams, id, id);
               this.tooltipTrigger();
             }
 
@@ -156,9 +147,11 @@
 
           showVideo(vtuber) {
             // livestreams : {vtuber : [true, avatar, livestreamID]}
-            this.livestreams[vtuber][0] = !this.livestreams[vtuber][0];
-            if(this.livestreams[vtuber][0]) Vue.set(this.showLivestreams, vtuber, this.livestreams[vtuber][2]);
-            else Vue.delete(this.showLivestreams, vtuber);
+            const data = this.livestreams[vtuber];
+            const iframe = this.$refs[data[2]][0];
+            Vue.set(this.livestreams, vtuber, [!data[0], data[1], data[2]]);
+            // stop embedded YouTube video
+            iframe.contentWindow.postMessage(JSON.stringify({"event":"command","func":"stopVideo"}), '*');
           }
         }
       });
