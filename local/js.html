@@ -1,0 +1,252 @@
+<script>
+  const app = new Vue({
+    el: "#app",
+    data: {
+      avatarWidth: 40,
+      avatarHeight: 40,
+      iframeWidth: 426,
+      iframeHeight: 240,
+      livestreams: {},
+      ytLinkAdded: {},
+      holoProduction: [
+        // Hololive
+        ["ときのそら", "AZKi", "ロボ子", "さくらみこ", "星街すいせい"],
+        ["白上フブキ", "夏色まつり", "夜空メル", "赤井はあと", "アキロゼ"],
+        ["湊あくあ", "癒月ちょこ", "百鬼あやめ", "紫咲シオン", "大空スバル"],
+        ["大神ミオ", "猫又おかゆ", "戌神ころね"],
+        ["不知火フレア", "白銀ノエル", "宝鐘マリン", "兎田ぺこら", "潤羽るしあ"],
+        ["天音かなた", "桐生ココ", "角巻わため", "常闇トワ", "姫森ルーナ"],
+        ["雪花ラミィ", "桃鈴ねね", "獅白ぼたん", "尾丸ポルカ"],
+        ["ラプラス", "鷹嶺ルイ", "博衣こより", "沙花叉クロヱ", "風真いろは"],
+        // Holostars
+        ["花咲みやび", "奏手イヅル", "アルランディス", "律可"],
+        ["アステル・レダ", "岸堂天真", "夕刻ロベル"],
+        ["影山シエン", "荒咬オウガ"],
+        // Hololive ID
+        ["Risu", "Moona", "Iofi"],
+        ["Ollie", "Anya", "Reine"],
+        // Hololive EN
+        ["Calli", "Kiara", "Ina'nis", "Gura", "Ame"],
+        ["IRyS", "Sana", "Fauna", "Kronii", "Mumei", "Baelz"]
+      ],
+      defaultAvatar: "https://yt3.ggpht.com/ppGub48S1GDyijg_Y8ZQj9Y6k6KjLWmUThu61MUmQsHiWf1QszZdhdGitCQUZlBwwdAQW3jk=s88-c-k-c0x00ffffff-no-rj-mo"
+    },
+    mounted() {
+      this.init();
+    },
+    methods: {
+      /**
+       * load configuration from local storage if exist
+       */
+      init() {
+        const bgImg = localStorage.getItem("bgImg") ? localStorage.getItem("bgImg") : "";
+        const vtuber = localStorage.getItem("vtuber") ? localStorage.getItem("vtuber") : "";
+        const userData = {
+          "bgImg": bgImg,
+          "vtuber": vtuber
+        }
+
+        this.loadUserConfig(userData);
+      },
+
+      /**
+       * save configuration to local storage
+       */
+      saveUserConfig(userData) {
+        localStorage.setItem("bgImg", userData.bgImg);
+        localStorage.setItem("vtuber", userData.vtuber);
+      },
+
+      /**
+       * load configuration from local storage
+       */
+      loadUserConfig(userData) {
+        const vtuber = userData.vtuber.split(',');
+        // checkboxes of tracking list
+        this.$refs.ckb.forEach(ckb => {
+          if (vtuber.includes(ckb.value)) ckb.checked = true;
+        });
+        // background img
+        this.$refs.bgImg.value = userData.bgImg;
+        document.body.style["background-image"] = "url(" + userData.bgImg + ")";
+      },
+
+      /**
+       * Get user's tracking list of VTubers
+       * @return {Array} arr: [vtuberName]
+       */
+      getTrackingList() {
+        const arr = [];
+        this.$refs.ckb.forEach(ckb => {
+          if (ckb.checked) arr.push(ckb.value);
+        });
+
+        return arr;
+      },
+
+      /**
+       * Save latest configuration to local storage
+       */
+      updateUserConfig() {
+        const bgImg = this.$refs.bgImg.value;
+        const trackingList = this.getTrackingList().toString();
+
+        // reload background image           
+        document.body.style["background-image"] = "url(" + bgImg + ")";
+
+        // update local storage
+        this.saveUserConfig({
+          "bgImg": bgImg,
+          "vtuber": trackingList
+        });
+      },
+
+      /**
+       * Enable the tooltip of avatars
+       */
+      tooltipTrigger() {
+        // wait for page rendered
+        this.$nextTick(() => {
+          if (this.$refs.avatar) {
+            this.$refs.avatar.forEach(avatar => {
+              return new bootstrap.Tooltip(avatar);
+            });
+          }
+        });
+      },
+
+      /**
+       * Update data of this.livestreams and avatar urls of local storage
+       * @param {Object} livestreams: {vtuber : [isShowable, avatarURL, livestreamID, save2Local]}
+       */
+      setStreamData(livestreams) {
+        this.livestreams = {};
+        const vtubers = Object.keys(livestreams);
+        const ytLinks = Object.keys(this.ytLinkAdded);
+
+        if (vtubers.length > 0) {
+          this.livestreams = livestreams;
+          
+          // update local storage
+          let localAvatars = localStorage.getItem("avatars");
+          localAvatars = localAvatars ? JSON.parse(localAvatars) : {};
+
+          vtubers.forEach(vtuber => {
+            if (livestreams[vtuber][3]) localAvatars[vtuber] = livestreams[vtuber][1];
+          });
+
+          localStorage.setItem("avatars", JSON.stringify(localAvatars));
+
+        } else alert("Sorry, there's no livestream you love now.");
+
+        if (ytLinks.length > 0) {  // temporary cache of video links added additionally by user
+          ytLinks.forEach(chName =>  Vue.set(this.livestreams, chName, this.ytLinkAdded[chName]));
+        }
+
+        this.tooltipTrigger();
+      },
+
+      /**
+       * Pre-check the avatar urls and trigger getHoloLiveStreams()
+       */
+      updateStreamData() {
+        // avatar urls in local storage
+        let localAvatars = localStorage.getItem("avatars");
+        localAvatars = localAvatars ? JSON.parse(localAvatars) : {};
+
+        const avatarsURL = {};  // avatar urls of tracking list
+        this.getTrackingList().forEach(vtuber => {
+          avatarsURL[vtuber] = localAvatars[vtuber] ? localAvatars[vtuber] : "";
+        });
+
+        // check availability of urls
+        const vtubers = Object.keys(avatarsURL).map(key => key);
+        const urls = Object.keys(avatarsURL).map(key => avatarsURL[key]);
+        const promises = urls.map(url => fetch(url).then(res => res.ok));
+        
+        Promise.all(promises)
+        .then(results => {
+          const avatars = {};
+          results.forEach((urlStatus, idx) => {
+            const vtuber = vtubers[idx];
+            const url = urls[idx];
+            avatars[vtuber] = [url ? urlStatus : false, url];
+          });
+
+          if (Object.keys(avatars).length > 0) {
+            google.script.run.withSuccessHandler(this.setStreamData).getHoloLiveStreams(avatars);
+          } else {
+            alert("Tracking list empty!");
+          }
+        });
+      },
+
+      /**
+       * Add livestream/video link additionally to this.livestreams
+       */
+      addStreamID() {
+        let id = "";
+        const url = this.$refs.input.value;
+        // url format check
+        if (url.search(/youtube.com/) > -1) id = url.split('?v=')[1];
+        else if (url.search(/youtu.be/) > -1) id = url.split('.be/')[1];
+        else alert("Invalid URL.");
+
+        const addStream = (chInfo) => {
+          if(chInfo[1]) {
+            Vue.set(this.livestreams, chInfo[0], [true, chInfo[1], id]);
+            Vue.set(this.ytLinkAdded, chInfo[0], [true, chInfo[1], id]);
+          } else {
+            // if getChInfoByVideo() return invalid url
+            Vue.set(this.livestreams, id, [true, this.defaultAvatar, id]);
+            Vue.set(this.ytLinkAdded, id, [true, this.defaultAvatar, id]);
+          }
+          this.tooltipTrigger();
+        }
+
+        // Get channel info of video and update livestreams data
+        if (id.length > 0) {
+          google.script.run.withSuccessHandler(addStream).getChInfoByVideo(url);
+        }
+
+        // clear input field
+        this.$refs.input.value = '';
+      },
+
+      /**
+       * Expand video display size
+       */
+      videoLarger() {
+        // default 16:9 aspect ratio of YouTube
+        this.iframeWidth += 213;
+        this.iframeHeight += 120;
+      },
+
+      /**
+       * Shrink video display size
+       */
+      videoSmaller() {
+        // default 16:9 aspect ratio of YouTube
+        if (this.iframeWidth > 213) {
+          this.iframeWidth -= 213;
+          this.iframeHeight -= 120;
+        }
+      },
+
+      /**
+       * Control livestream(video) display/hidden with avatar object on the top of page
+       * @param {String} vtuber
+       */
+      showVideo(vtuber) {
+        // livestreams: {vtuber : [isShowable, avatarURL, livestreamID, save2Local]}
+        const data = this.livestreams[vtuber];
+        const iframe = this.$refs[data[2]][0];  // access iframe object with livestreamID
+        Vue.set(this.livestreams, vtuber, [!data[0], data[1], data[2]]);
+        if (!data[0]) {
+          // stop embedded YouTube video
+          iframe.contentWindow.postMessage(JSON.stringify({"event":"command","func":"stopVideo"}), '*');
+        }
+      }
+    }
+  });
+</script>

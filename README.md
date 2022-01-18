@@ -1,27 +1,47 @@
 # HoloDDer
-A Google Apps Script for everyone who loves Hololive. Darenimo Daisuki ! (誰にも大好き!😻 )
+A Google Apps Script for watching multiple YouTube livestreams of Hololive. Darenimo Daisuki ! (誰にも大好き!😻 )
 
-<img src="./demo/demo.gif" width="515" height="350"/>
+<img src="./image/demo.gif" width=65%/>
 
 Background Image Credit: [twitter@tsuru_py](https://twitter.com/tsuru_py/status/1467466242391175171)
 
-### Setting
+### About
+We can use it for watching multiple livestreams of Hololive members, or add other YouTube video for watching at the same time. The script will check schedule info on Hololive official website.
+
+The project root has 2 main folders with source code: cloud & local. I made a cloud version for public deploy, everyone can use it with a Google account. The cloud version will remember user configuration with a unique hash ID on Google cloud spreadsheet when CLICK "save" button. It NEVER keep your email address or other private info.
+
+So feel free to check the cloud version [>>here<<](https://script.google.com/macros/s/AKfycbx0bzvEjURLpU9wGz588m72iAJXcAyJoQdd45VUAzbK1KBE-kmpcnZe9viAWQpgD2J-/exec) or built a local version yourself.
+
+### Setting (local version)
 1. Create a new App Script project on Google Drive
-2. Copy and paste the content of my "code .gs" to your "code .gs" file
-3. Copy and paste the content of my "index .html" to your "index .html" file (you must create it first)
-4. Add [Cheerio library for Google Apps Script](https://github.com/tani/cheeriogs)
-<br>[Script ID] : 1ReeQ6WO8kKNxoaA_O0XEQ589cIrRvEBA9qcWpNqdOP17i47u6N9M5Xh0
-5. Deploy as a web application
+2. Create all files the same as content of folder "local"
+3. Add [Cheerio library for Google Apps Script](https://github.com/tani/cheeriogs)
+   <br>[Script ID] : 1ReeQ6WO8kKNxoaA_O0XEQ589cIrRvEBA9qcWpNqdOP17i47u6N9M5Xh0
+4. Deploy as a web application for yourself
 - [Overview of Google Apps Script](https://developers.google.com/apps-script/overview)
 
 ### How to use
-1. Feel free to modify "holoChID" in "code .gs"
-2. HoloDDer will check and display all livestreams of VTuber in "holoChID"
-3. Get/Update the livestream data through the 🔄 &nbsp;button 
-4. Add video manually through the input field and "Add" button
+1. Check and save tracking list with "setting" modal (popup window)
+2. We can also set an awesome fan-art background image with URL
+3. Get/Update the livestream data through the 🔄 &nbsp;button
+4. It will check and display all livestreams currently according to tracking list 
+5. Add other YouTube livestream/video manually with the "add" modal
+6. Control the video display/hidden with avatar icon on the top of page
 
 ---
 ### Change Log
+2022-01-18
+#### Added
+- "Setting" modal
+- "Add Video" modal
+- Keep user configuration in local storage
+- Keep valid avatar URLs in local storage for saving [quota](https://developers.google.com/apps-script/guides/services/quotas) usage
+#### Changed
+- Display channel avatar of video which is added additionally instead of default avatar
+- Improve the UI/UX
+#### Fixed
+- The video which added additionally by user is not exist after livestream data update
+
 2021-12-21
 #### Changed
 - Using CSS for livestreams display control instead of Vue list rendering
