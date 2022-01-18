@@ -1,5 +1,7 @@
 # HoloDDer
-A Google Apps Script for watching multiple YouTube livestreams of Hololive. Darenimo Daisuki ! (誰にも大好き!😻 )
+A Google Apps Script for watching multiple YouTube livestreams of Hololive.
+
+Darenimo Daisuki !(誰にも大好き!😻 )
 
 <img src="./image/demo.gif" width=65%/>
 
@@ -23,10 +25,10 @@ So feel free to check the cloud version [>>here<<](https://script.google.com/mac
 ### How to use
 1. Check and save tracking list with "setting" modal (popup window)
 2. We can also set an awesome fan-art background image with URL
-3. Get/Update the livestream data through the 🔄 &nbsp;button
+3. Get / Update the livestream data through the 🔄 &nbsp;button
 4. It will check and display all livestreams currently according to tracking list 
 5. Add other YouTube livestream/video manually with the "add" modal
-6. Control the video display/hidden with avatar icon on the top of page
+6. Control the video display / hidden with avatar icon on the top of page
 
 ---
 ### Change Log
