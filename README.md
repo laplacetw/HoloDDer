@@ -14,6 +14,8 @@ The project root has 2 main folders with source code: cloud & local. I made a cl
 
 So feel free to check the cloud version [>>here<<](https://script.google.com/macros/s/AKfycbywEBw2_-AJ5I04qP1EiVUyzWzxRuZEnHTqJeF7hrj8QRQ_bmTWv6R1aZKGXdY-7ddh/exec) or built a local version yourself.
 
+<img src="./image/setting.png" width=65%/>
+
 ### Setting (local version)
 1. Create a new App Script project on Google Drive
 2. Create all files the same as content of folder "local"
