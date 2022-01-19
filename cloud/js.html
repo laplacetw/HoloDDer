@@ -269,7 +269,7 @@
         const data = this.livestreams[vtuber];
         const iframe = this.$refs[data[2]][0];  // access iframe object with livestreamID
         Vue.set(this.livestreams, vtuber, [!data[0], data[1], data[2]]);
-        if (!data[0]) {
+        if (!this.livestreams[vtuber][0]) {
           // stop embedded YouTube video
           iframe.contentWindow.postMessage(JSON.stringify({"event":"command","func":"stopVideo"}), '*');
         }

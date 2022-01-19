@@ -12,7 +12,7 @@ We can use it for watching multiple livestreams of Hololive members, or add othe
 
 The project root has 2 main folders with source code: cloud & local. I made a cloud version for public deploy, everyone can use it with a Google account. The cloud version will remember user configuration with a unique hash ID on Google cloud spreadsheet when CLICK "save" button. It NEVER keep your email address or other private info.
 
-So feel free to check the cloud version [>>here<<](https://script.google.com/macros/s/AKfycbx0bzvEjURLpU9wGz588m72iAJXcAyJoQdd45VUAzbK1KBE-kmpcnZe9viAWQpgD2J-/exec) or built a local version yourself.
+So feel free to check the cloud version [>>here<<](https://script.google.com/macros/s/AKfycbywEBw2_-AJ5I04qP1EiVUyzWzxRuZEnHTqJeF7hrj8QRQ_bmTWv6R1aZKGXdY-7ddh/exec) or built a local version yourself.
 
 ### Setting (local version)
 1. Create a new App Script project on Google Drive
@@ -32,6 +32,10 @@ So feel free to check the cloud version [>>here<<](https://script.google.com/mac
 
 ---
 ### Change Log
+2022-01-19
+#### Fixed
+- Fixed the hidden video didn't stop playing
+
 2022-01-18
 #### Added
 - "Setting" modal
