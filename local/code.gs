@@ -1,54 +1,54 @@
 /**
- * Get channel info by YouTube video url with the UrlFetchApp.fetch()
- * @param {String} url: YouTube url
- * @return {Array} chInfo: [chName, chAvatarURL]
+ * Read user data with Properties Service.
+ * @param {Array}
+ * @return {Object} user data
+ */
+function readUserData(keys) {
+  const userProperties = PropertiesService.getUserProperties();
+  const data = userProperties.getProperties();
+  const res = {};
+
+  keys.forEach(key => {
+    if(data[key]) res[key] = data[key];
+  });
+
+  return res;
+}
+
+/**
+ * Write user data with Properties Service.
+ * @param {Object} user data
+ */
+function writeUserData(data) {
+  const userProperties = PropertiesService.getUserProperties();
+  userProperties.setProperties(data);
+}
+
+/**
+ * Rate (like) a Youtube video
+ * @param {String}
+ */
+function rateVideo(videoID) {
+  YouTube.Videos.rate(videoID, 'like');
+}
+
+/**
+ * Get channel info by YouTube video url
+ * @param {String} YouTube url
+ * @return {Array} [chName, chAvatar]
  */
 function getChInfoByVideo(url) {
-  const rawData = UrlFetchApp.fetch(url).getContentText('UTF-8');
-  const $ = Cheerio.load(rawData);  // HTML parser
   let chInfo = ["", ""];
-
-  $('script:not([src])').each((i, elem) => {
-    const data = elem.children[0].data;
-    if (data.indexOf('var ytInitialData') > -1) {
-      let json = "";
-      // prevent parsing fail of JSON strings
-      json = data.replace(/\\x7b/g, '{').replace(/\\x7d/g, '}')
-            .replace(/%25/g, '%').replace(/\\x5b/g, '[').replace(/\\x5d/g, ']')
-            .replace(/\\x22/g, '"').replace(/\\x3d|%3D/g, '=').replace(/%23/g, '#')
-            .replace(/%26|\\\\u0026/g, '&').replace(/%3A/g, ':').replace(/%2F/g, '/')
-            .replace(/%3F/g, '_');
-
-      json = JSON.stringify(json).replace(/\\/g, '');
-      // keep JSON data needed only
-      json = json.match(/{"slimVideoMetadataSectionRenderer[\W\w]*?"itemSectionRenderer"/)[0];
-      json = json.replace(',{"itemSectionRenderer"', '');
-
-      try {
-        json = JSON.parse(json);
-        const videoMeta = json.slimVideoMetadataSectionRenderer.contents[2];
-        // channel name
-        const chName = videoMeta.slimOwnerRenderer.title.runs[0].text;
-        // avatar url
-        const chAvatarURL = videoMeta.slimOwnerRenderer.thumbnail.thumbnails[0].url;
-        
-        chInfo = [chName, chAvatarURL];
-        return false;  // interrupt loop of $('script:not([src])').each()
-      }
-      catch(error) {
-        chInfo = [error, ""];
-        return false;  // interrupt loop of $('script:not([src])').each()
-      }
-    }
-  });
+  const video = SubTube.video(url);
+  if(video.meta) chInfo = [video.chName(), video.chAvatarS()];
 
   return chInfo;
 }
 
 /**
  * Get livestream data from Hololive official website.
- * @param {Object} avatars: {vtuber : [isAvailable, avatarURL]}
- * @return {Object} livestreams: {vtuber : [isShowable, avatarURL, livestreamID, save2Local]}
+ * @param {Object} {vtuber : [isAvailable, avatarUrl]}
+ * @return {Object} {vtuber : [isShowable, avatarUrl, livestreamID, isUpdated, isLiked]}
  */
 function getHoloLiveStreams(avatars) {
   const holoSched = 'https://schedule.hololive.tv';
@@ -67,7 +67,7 @@ function getHoloLiveStreams(avatars) {
     const livestreamID = item.attribs['href'].split('?v=')[1];
 
     if (isStreaming > -1 && (vtubers.includes(vtuber))) {
-      if (avatars[vtuber][0]) livestreams[vtuber] = [true, avatars[vtuber][1], livestreamID, false];
+      if (avatars[vtuber][0]) livestreams[vtuber] = [true, avatars[vtuber][1], livestreamID, false, false];
       else invalidAvatarStreamID[vtuber] = livestreamID;
     }
   });
@@ -79,10 +79,10 @@ function getHoloLiveStreams(avatars) {
     Object.keys(invalidAvatarStreamID).forEach(vtuber => {
       const chInfo = getChInfoByVideo("https://youtu.be/" + invalidAvatarStreamID[vtuber]);
       if (chInfo[1]) {
-        livestreams[vtuber] = [true, chInfo[1], invalidAvatarStreamID[vtuber], true];
+        livestreams[vtuber] = [true, chInfo[1], invalidAvatarStreamID[vtuber], true, false];
       } else {
         // if getChInfoByVideo() return invalid url
-        livestreams[vtuber] = [true, defaultAvatar, invalidAvatarStreamID[vtuber], false];
+        livestreams[vtuber] = [true, defaultAvatar, invalidAvatarStreamID[vtuber], false, false];
       }
     });
   }
