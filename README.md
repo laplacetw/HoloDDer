@@ -10,11 +10,11 @@ Background Image Credit: [twitter@tsuru_py](https://twitter.com/tsuru_py/status/
 ### About
 We can use it for watching multiple livestreams of Hololive members, or add other YouTube video for watching at the same time. The script will check schedule info on Hololive official website.
 
-The project root has 2 main folders with source code: cloud & local. I made a cloud version for demo, everyone can use it with a Google account. The cloud demo will remember user configuration with a unique hash ID on Google cloud spreadsheet when CLICK "save" button. It NEVER keep your email address or other private info.
+The project root has 2 main folders with source code: cloud & local. I made a cloud version for demo, everyone can use it with a Google account. The cloud demo will remember user configuration with a unique hash ID on Google cloud spreadsheet when CLICK "save" button. It `NEVER` keep your email address or other private info.
 
 Check the demo [>>here<<](https://script.google.com/macros/s/AKfycbywEBw2_-AJ5I04qP1EiVUyzWzxRuZEnHTqJeF7hrj8QRQ_bmTWv6R1aZKGXdY-7ddh/exec)
 
-### Setting (local version)
+### Setting
 1. Create a new Apps Script project on Google Drive
 2. Create all files the same as content of folder "local"
 3. Add [Cheerio library](https://github.com/tani/cheeriogs)
