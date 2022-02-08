@@ -37,7 +37,8 @@ Check the demo [>>here<<](https://script.google.com/macros/s/AKfycbywEBw2_-AJ5I0
 ### Change Log
 2022-02-08
 #### Fixed
-- Fixed Watson Amelia's livestream has not loading since the VTuber name was changed in schedule info
+- Livestream of Watson Amelia was not loading since the VTuber name of official schedule info has changed
+
 
 2022-02-05
 #### Added
