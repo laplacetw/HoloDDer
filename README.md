@@ -1,5 +1,5 @@
 # HoloDDer
-A Google Apps Script for watching multiple YouTube livestreams of Hololive.
+Watching, rating multiple YouTube livestreams of Hololive with Google Apps Script.
 
 Darenimo Daisuki !(誰にも大好き!😻 )
 
