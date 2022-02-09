@@ -35,9 +35,13 @@ Check the demo [>>here<<](https://script.google.com/macros/s/AKfycbywEBw2_-AJ5I0
 
 ---
 ### Change Log
+2022-02-09
+#### Fixed
+- Livestream tracking of Roboco was skipped since the VTuber name of official schedule info has changed from "ロボ子" to "ロボ子さん"
+
 2022-02-08
 #### Fixed
-- Livestream of Watson Amelia was not loading since the VTuber name of official schedule info has changed
+- Livestream tracking of Watson Amelia was skipped since the VTuber name of official schedule info has changed from "Ame" to "Amelia"
 
 
 2022-02-05
